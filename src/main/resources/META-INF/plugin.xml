@@ -1,0 +1,16 @@
+<idea-plugin xmlns:xi="http://www.w3.org/2001/XInclude">
+    <id>net.exoego.intellij.smashtest</id>
+    <name>Smashtest</name>
+    <description><![CDATA[
+        Adds support for the Smash, a language for rapidly describing and deploying test cases.
+    ]]></description>
+    <version>0.1.0</version>
+    <vendor url="https://github.com/exoego">TATSUNO Yasuhiro</vendor>
+    <idea-version since-build="192.6817.14" until-build="194.0"/>
+    <extensions defaultExtensionNs="com.intellij">
+<!--        <fileTypeFactory implementation="net.exoego.intellij.smashtest.SmashtestFileTypeFactory"/>-->
+
+        <fileType name="Simple file" implementationClass="net.exoego.intellij.smashtest.SmashtestFileType$"
+                  language="Smashtest" extensions="smash"/>
+    </extensions>
+</idea-plugin>
