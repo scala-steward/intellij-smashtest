@@ -1,0 +1,222 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "Smashtest",
+	"patterns": [
+		{
+			"include": "#fullComment"
+		},
+		{
+			"include": "#debug"
+		},
+		{
+			"include": "#textualStep"
+		},
+		{
+			"include": "#step"
+		},
+		{
+			"include": "#codeBlock"
+		}
+	],
+	"repository": {
+		"fullComment": {
+			"name": "comment.link.double-slash.smash",
+			"match": "^\\s*//.*$"
+		},
+		"debug": {
+			"name": "markup.italic.debug.smash",
+			"match": "^(|.*\\s)(\\$|\\~\\~|\\~)(\\s+(.*?)(?=(\\{[^\\}]*$|$))|$)",
+			"patterns": [{
+				"include": "$self"
+			}]
+		},
+		"textualStep": {
+			"name": "keyword.other.smash",
+			"match": "(^\\s*(\\-\\s+.*?|.*?\\s\\-\\s*)((?=(\\{[^\\}]*$))|\\s*\\/\\/.*$|$))|(^\\s*[^\\*\\s].*\\s(?=(\\{[^\\}]*$)))",
+			"captures": {
+				"0": {
+					"patterns": [{
+						"include": "#partialTextualStep"
+					}]
+				}
+			},
+			"patterns": [{
+				"include": "$self"
+			}]
+		},
+		"step": {
+			"name": "entity.name.function.smash",
+			"match": "^\\s*(((\\-s|\\.s|\\$s|\\-|\\!\\!|\\!|\\.\\.|\\~\\~|\\~|\\$|\\+\\?|\\+|\\#[^\\s]+)\\s+)*)((\\*{1,3}\\s+|(\\[|\\])\\s*(\\/\\/.*)?$)?(.*?))((\\s+(\\-s|\\.s|\\$s|\\-|\\!\\!|\\!|\\.\\.|\\~\\~|\\~|\\$|\\+\\?|\\+|\\#[^\\s]+))*)(\\s+(?=(\\{[^\\}]*$))|\\s+\\[\\s*(\\/\\/.*)?$|\\s*(\\/\\/.*$)|\\s*$)",
+			"captures": {
+				"1": {
+					"name": "keyword.control.modifier.smash"
+				},
+				"4": {
+					"patterns": [
+						{
+							"include": "#functionDeclaration"
+						},
+						{
+							"include": "#singleQuote"
+						},
+						{
+							"include": "#doubleQuote"
+						},
+						{
+							"include": "#bracketedString"
+						},
+						{
+							"include": "#escapeChar"
+						},
+						{
+							"include": "#variable"
+						},
+						{
+							"include": "#comment"
+						}
+					]
+				},
+				"7": {
+					"name": "comment.line.double-slash.smash"
+				},
+				"9": {
+					"name": "keyword.control.modifier.smash"
+				},
+				"14": {
+					"name": "comment.line.double-slash.smash"
+				},
+				"15": {
+					"name": "comment.line.double-slash.smash"
+				}
+			}
+		},
+		"partialTextualStep": {
+			"name": "keyword.smash",
+			"match": "\\s*(((\\-s|\\.s|\\$s|\\-|\\!\\!|\\!|\\.\\.|\\~\\~|\\~|\\$|\\+\\?|\\+|\\#[^\\s]+)\\s+)*)((\\*{1,3}\\s+|(\\[|\\])\\s*(\\/\\/.*)?$)?(.*?))((\\s+(\\-s|\\.s|\\$s|\\-|\\!\\!|\\!|\\.\\.|\\~\\~|\\~|\\$|\\+\\?|\\+|\\#[^\\s]+))*)(\\s+(?=(\\{[^\\}]*$))|\\s+\\[\\s*(\\/\\/.*)?$|\\s*(\\/\\/.*$)|\\s*$)",
+			"captures": {
+				"1": {
+					"name": "keyword.control.modifier.smash"
+				},
+				"4": {
+					"patterns": [
+						{
+							"include": "#escapeChar"
+						},
+						{
+							"include": "#variable"
+						}
+					]
+				},
+				"7": {
+					"name": "comment.line.double-slash.smash"
+				},
+				"9": {
+					"name": "keyword.control.modifier.smash"
+				},
+				"14": {
+					"name": "comment.line.double-slash.smash"
+				},
+				"15": {
+					"name": "comment.line.double-slash.smash"
+				}
+			}
+		},
+		"functionDeclaration": {
+			"match": "\\*{1,3}(\\s+(.*)|\\s*$)",
+			"name": "support.function.smash",
+			"captures": {
+				"2": {
+					"patterns": [
+						{
+							"include": "#singleQuote"
+						},
+						{
+							"include": "#doubleQuote"
+						},
+						{
+							"include": "#bracketedString"
+						},
+						{
+							"include": "#escapeChar"
+						},
+						{
+							"include": "#variable"
+						}
+					]
+				}
+			}
+		},
+		"singleQuote": {
+			"begin": "'(?=.*')",
+			"end": "'",
+			"name": "string.quoted.single.smash",
+			"patterns": [
+				{
+					"include": "#escapeChar"
+				},
+				{
+					"include": "#variable"
+				}
+			]
+		},
+		"doubleQuote": {
+			"begin": "\"",
+			"end": "\"",
+			"name": "string.quoted.single.smash",
+			"patterns": [
+				{
+					"include": "#escapeChar"
+				},
+				{
+					"include": "#variable"
+				}
+			]
+		},
+		"variable": {
+			"begin": "\\{\\{?",
+			"end": "\\}\\}?",
+			"name": "variable.smash",
+			"patterns": [
+				{
+					"match": ":",
+					"name": "keyword.control.modifier.lookahead.smash"
+				}
+			]
+		},
+		"escapeChar": {
+			"match": "\\\\.",
+			"name": "constant.character.escape.smash"
+		},
+		"bracketedString": {
+			"begin": "\\[(?=.*\\])",
+			"end": "\\]",
+			"name": "string.quoted.other.smash",
+			"patterns": [
+				{
+					"include": "#escapeChar"
+				},
+				{
+					"include": "#variable"
+				},
+				{
+					"include": "#bracketedString"
+				}
+			]
+		},
+		"codeBlock": {
+			"begin": "\\{",
+			"end": "\\}",
+			"name": "meta.embedded.block.smash",
+			"patterns": [
+				{
+					"include": "source.js"
+				}
+			]
+		},
+		"comment": {
+			"match": "\\/\\/.*",
+			"name": "comment.link.double-slash.smash"
+		}
+	},
+	"scopeName": "source.smash"
+}

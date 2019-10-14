@@ -2,7 +2,7 @@ intellijPluginName in ThisBuild := "IntelliJ-Smashtest"
 intellijBuild in ThisBuild := "192.6817.14"
 intellijDownloadSources in ThisBuild := true
 intellijInternalPlugins += "java"
-intellijExternalPlugins += "PsiViewer".toPlugin
+//intellijExternalPlugins += "PsiViewer".toPlugin
 
 lazy val intellijSmashtest = (project in file("."))
   .enablePlugins(SbtIdeaPlugin)
@@ -14,6 +14,7 @@ lazy val intellijSmashtest = (project in file("."))
     scalacOptions in Global ++= Seq("-target:jvm-1.8", "-deprecation", "-feature"),
     unmanagedSourceDirectories in Compile += baseDirectory.value / "gen",
     libraryDependencies ++= Seq(
+      "org.eclipse" % "org.eclipse.tm4e.core" % "0.3.4-SNAPSHOT",
       "org.scalatest" %% "scalatest" % "3.0.8" % Test
     )
   )
