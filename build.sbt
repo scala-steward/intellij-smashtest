@@ -11,6 +11,7 @@ lazy val intellijSmashtest = (project in file("."))
     scalaVersion := "2.13.1",
     javacOptions in Global ++= Seq("-source", "1.8", "-target", "1.8"),
     scalacOptions in Global ++= Seq("-target:jvm-1.8", "-deprecation", "-feature"),
+    unmanagedSourceDirectories in Compile += baseDirectory.value / "gen",
     libraryDependencies ++= Seq(
       "org.scalatest" %% "scalatest" % "3.0.8" % Test
     )

@@ -8,9 +8,9 @@
     <vendor url="https://github.com/exoego">TATSUNO Yasuhiro</vendor>
     <idea-version since-build="192.6817.14" until-build="194.0"/>
     <extensions defaultExtensionNs="com.intellij">
-<!--        <fileTypeFactory implementation="net.exoego.intellij.smashtest.SmashtestFileTypeFactory"/>-->
-
         <fileType name="Simple file" implementationClass="net.exoego.intellij.smashtest.SmashtestFileType$"
                   language="Smashtest" extensions="smash"/>
+        <lang.parserDefinition language="Smashtest" implementationClass="net.exoego.intellij.smashtest.SmashtestParserDefinition$"/>
+        <lang.syntaxHighlighterFactory language="Smashtest" implementationClass="net.exoego.intellij.smashtest.SmashtestSyntaxHighlighterFactory"/>
     </extensions>
 </idea-plugin>

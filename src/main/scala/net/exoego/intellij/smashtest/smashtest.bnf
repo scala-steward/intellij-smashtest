@@ -1,0 +1,45 @@
+{
+  parserClass="net.exoego.intellij.smashtest.parser.SmashtestParser"
+
+  extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+  psiClassPrefix="Smashtest"
+  psiImplClassSuffix="Impl"
+  psiPackage="net.exoego.intellij.smashtest.psi"
+  psiImplPackage="net.exoego.intellij.smashtest.impl"
+
+  elementTypeHolderClass="net.exoego.intellij.smashtest.psi.SmashtestTypes"
+  elementTypeClass="net.exoego.intellij.smashtest.psi.SmashtestElementType"
+  tokenTypeClass="net.exoego.intellij.smashtest.psi.SmashtestTokenType"
+}
+
+smashtestFile ::= pattern_*
+
+private pattern_ ::= (fullComment|debug|textualStep|step|codeBlock)
+
+debug ::= (pauseBefore_|pauseAfter_|noReportPauseBefore_|noReportPauseAfter_)
+private pauseBefore_ ::= DEBUG_SINGLE step
+private pauseAfter_ ::= step DEBUG_SINGLE
+private noReportPauseBefore_ ::= DEBUG_DOUBLE step
+private noReportPauseAfter_ ::= step DEBUG_DOUBLE
+
+textualStep ::= (headingStep_|commentStep_)
+private headingStep_ ::= TEXTUAL_SINGLE partialTextualStep
+private commentStep_ ::= partialTextualStep TEXTUAL_SINGLE
+
+step ::= MODFIER (functionDeclaration|singleQuote|doubleQuote|bracketedString|escapeChar|variable|comment)
+
+partialTextualStep ::= MODIFIER (escapeChar|variable)
+
+private functionBody_ ::= (singleQuote|doubleQuote|bracketedString|escapeChar|variable)
+functionDeclaration ::= functionBody_
+
+private escapeCharOrVariables_ ::= (escapeChar|variable)
+singleQuote ::= SINGLE_QUOTE_BEGIN escapeCharOrVariables_* SINGLE_QUOTE_END
+doubleQuote ::= DOUBLE_QUOTE_BEGIN escapeCharOrVariables_* DOUBLE_QUOTE_END
+
+private escapeCharOrVariablesOrBracketedString_ ::= (escapeChar|variable|bracketedString)
+bracketedString ::= BRACKETD_BEGIN escapeCharOrVariablesOrBracketedString_* BRACKETD_END
+
+codeBlock ::= CODE_BLOCK_BEGIN SOURCE_JS? CODE_BLOCK_END
+
