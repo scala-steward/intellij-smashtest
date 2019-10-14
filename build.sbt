@@ -2,6 +2,7 @@ intellijPluginName in ThisBuild := "IntelliJ-Smashtest"
 intellijBuild in ThisBuild := "192.6817.14"
 intellijDownloadSources in ThisBuild := true
 intellijInternalPlugins += "java"
+intellijExternalPlugins += "PsiViewer".toPlugin
 
 lazy val intellijSmashtest = (project in file("."))
   .enablePlugins(SbtIdeaPlugin)

@@ -4,8 +4,10 @@ package net.exoego.intellij.smashtest;
 
 import com.intellij.lexer.FlexLexer;
 import com.intellij.psi.tree.IElementType;
-import com.intellij.psi.TokenType;
-import net.exoego.intellij.smashtest.psi.SmashtestTypes;
+
+import static com.intellij.psi.TokenType.BAD_CHARACTER;
+import static com.intellij.psi.TokenType.WHITE_SPACE;
+import static net.exoego.intellij.smashtest.psi.SmashtestTypes.*;
 
 
 /**
@@ -13,7 +15,7 @@ import net.exoego.intellij.smashtest.psi.SmashtestTypes;
  * <a href="http://www.jflex.de/">JFlex</a> 1.7.0
  * from the specification file <tt>smashtest.flex</tt>
  */
-class SmashtestLexer implements FlexLexer {
+public class SmashtestLexer implements FlexLexer {
 
   /** This character denotes the end of file */
   public static final int YYEOF = -1;
@@ -23,7 +25,7 @@ class SmashtestLexer implements FlexLexer {
 
   /** lexical states */
   public static final int YYINITIAL = 0;
-  public static final int WAITING_VALUE = 2;
+  public static final int STEP = 2;
 
   /**
    * ZZ_LEXSTATE[l] is the state in the DFA for the lexical state l
@@ -37,24 +39,25 @@ class SmashtestLexer implements FlexLexer {
 
   /** 
    * Translates characters to character classes
-   * Chosen bits are [9, 6, 6]
-   * Total runtime size is 1440 bytes
+   * Chosen bits are [8, 7, 6]
+   * Total runtime size is 1808 bytes
    */
   public static int ZZ_CMAP(int ch) {
-    return ZZ_CMAP_A[ZZ_CMAP_Y[ZZ_CMAP_Z[ch>>12]|((ch>>6)&0x3f)]|(ch&0x3f)];
+    return ZZ_CMAP_A[(ZZ_CMAP_Y[(ZZ_CMAP_Z[ch>>13]<<7)|((ch>>6)&0x7f)]<<6)|(ch&0x3f)];
   }
 
-  /* The ZZ_CMAP_Z table has 272 entries */
+  /* The ZZ_CMAP_Z table has 136 entries */
   static final char ZZ_CMAP_Z[] = zzUnpackCMap(
-    "\1\0\1\100\1\200\u010d\100");
+    "\1\0\1\1\206\2");
 
-  /* The ZZ_CMAP_Y table has 192 entries */
+  /* The ZZ_CMAP_Y table has 384 entries */
   static final char ZZ_CMAP_Y[] = zzUnpackCMap(
-    "\1\0\1\100\1\200\175\100\1\300\77\100");
+    "\1\0\1\1\1\2\127\1\1\3\45\1\1\4\1\5\76\1\1\3\277\1");
 
-  /* The ZZ_CMAP_A table has 256 entries */
+  /* The ZZ_CMAP_A table has 384 entries */
   static final char ZZ_CMAP_A[] = zzUnpackCMap(
-    "\11\0\1\4\1\2\1\1\1\5\1\3\22\0\1\4\16\0\1\6\125\0\1\1\142\0\2\1\26\0");
+    "\11\0\1\4\1\1\2\2\1\1\22\0\1\4\16\0\1\3\125\0\1\2\32\0\1\2\37\0\1\2\77\0\13"+
+    "\2\35\0\2\2\5\0\1\2\57\0\1\2\40\0");
 
   /** 
    * Translates DFA states to action switch labels.
@@ -62,10 +65,11 @@ class SmashtestLexer implements FlexLexer {
   private static final int [] ZZ_ACTION = zzUnpackAction();
 
   private static final String ZZ_ACTION_PACKED_0 =
-    "\2\0\1\1\1\2\1\1\2\3\1\4";
+    "\2\0\1\1\2\2\1\1\1\3\1\2\1\3\1\4"+
+    "\1\5\1\6";
 
   private static int [] zzUnpackAction() {
-    int [] result = new int[8];
+    int [] result = new int[12];
     int offset = 0;
     offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
     return result;
@@ -90,10 +94,11 @@ class SmashtestLexer implements FlexLexer {
   private static final int [] ZZ_ROWMAP = zzUnpackRowMap();
 
   private static final String ZZ_ROWMAP_PACKED_0 =
-    "\0\0\0\7\0\16\0\25\0\34\0\25\0\43\0\52";
+    "\0\0\0\5\0\12\0\17\0\24\0\31\0\36\0\43"+
+    "\0\50\0\55\0\62\0\67";
 
   private static int [] zzUnpackRowMap() {
-    int [] result = new int[8];
+    int [] result = new int[12];
     int offset = 0;
     offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
     return result;
@@ -116,12 +121,15 @@ class SmashtestLexer implements FlexLexer {
   private static final int [] ZZ_TRANS = zzUnpackTrans();
 
   private static final String ZZ_TRANS_PACKED_0 =
-    "\1\3\5\4\1\5\1\3\1\4\1\6\1\4\1\7"+
-    "\1\6\1\3\10\0\5\4\7\0\1\10\1\0\1\4"+
-    "\1\7\1\4\2\7\1\0\2\10\2\0\3\10";
+    "\1\3\1\4\1\5\1\6\1\4\1\7\1\10\1\7"+
+    "\1\11\1\12\1\3\1\0\2\3\2\0\2\4\1\0"+
+    "\1\4\1\3\1\4\1\5\1\3\1\4\1\3\1\0"+
+    "\1\3\1\13\1\0\1\7\1\0\2\7\2\0\1\10"+
+    "\3\0\1\7\1\0\1\7\1\14\5\0\1\12\1\13"+
+    "\1\0\3\13\1\14\1\0\3\14";
 
   private static int [] zzUnpackTrans() {
-    int [] result = new int[49];
+    int [] result = new int[60];
     int offset = 0;
     offset = zzUnpackTrans(ZZ_TRANS_PACKED_0, offset, result);
     return result;
@@ -159,10 +167,10 @@ class SmashtestLexer implements FlexLexer {
   private static final int [] ZZ_ATTRIBUTE = zzUnpackAttribute();
 
   private static final String ZZ_ATTRIBUTE_PACKED_0 =
-    "\2\0\1\11\5\1";
+    "\2\0\12\1";
 
   private static int [] zzUnpackAttribute() {
-    int [] result = new int[8];
+    int [] result = new int[12];
     int offset = 0;
     offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
     return result;
@@ -217,13 +225,18 @@ class SmashtestLexer implements FlexLexer {
   /** denotes if the user-EOF-code has already been executed */
   private boolean zzEOFDone;
 
+  /* user code: */
+  public SmashtestLexer() {
+    this((java.io.Reader)null);
+  }
+
 
   /**
    * Creates a new scanner
    *
    * @param   in  the java.io.Reader to read input from.
    */
-  SmashtestLexer(java.io.Reader in) {
+  public SmashtestLexer(java.io.Reader in) {
     this.zzReader = in;
   }
 
@@ -373,18 +386,6 @@ class SmashtestLexer implements FlexLexer {
 
 
   /**
-   * Contains user EOF-code, which will be executed exactly once,
-   * when the end of file is reached
-   */
-  private void zzDoEOF() {
-    if (!zzEOFDone) {
-      zzEOFDone = true;
-    
-    }
-  }
-
-
-  /**
    * Resumes scanning until the next regular expression is matched,
    * the end of input is encountered or an I/O-Error occurs.
    *
@@ -470,31 +471,40 @@ class SmashtestLexer implements FlexLexer {
 
       if (zzInput == YYEOF && zzStartRead == zzCurrentPos) {
         zzAtEOF = true;
-        zzDoEOF();
         return null;
       }
       else {
         switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
           case 1: 
-            { return TokenType.BAD_CHARACTER;
-            } 
-            // fall through
-          case 5: break;
-          case 2: 
-            { yybegin(YYINITIAL); return TokenType.WHITE_SPACE;
-            } 
-            // fall through
-          case 6: break;
-          case 3: 
-            { yybegin(WAITING_VALUE); return TokenType.WHITE_SPACE;
+            { yybegin(STEP); return TEXT;
             } 
             // fall through
           case 7: break;
-          case 4: 
-            { yybegin(YYINITIAL); return SmashtestTypes.COMMENT;
+          case 2: 
+            { yybegin(YYINITIAL); return WHITE_SPACE;
             } 
             // fall through
           case 8: break;
+          case 3: 
+            { return TEXT;
+            } 
+            // fall through
+          case 9: break;
+          case 4: 
+            { return WHITE_SPACE;
+            } 
+            // fall through
+          case 10: break;
+          case 5: 
+            { yybegin(YYINITIAL); return COMMENT;
+            } 
+            // fall through
+          case 11: break;
+          case 6: 
+            { return COMMENT;
+            } 
+            // fall through
+          case 12: break;
           default:
             zzScanError(ZZ_NO_MATCH);
           }

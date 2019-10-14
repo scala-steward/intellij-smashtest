@@ -15,31 +15,24 @@
 
 smashtestFile ::= pattern_*
 
-private pattern_ ::= (fullComment|debug|textualStep|step|codeBlock)
+private pattern_ ::= (comment|step)
 
-debug ::= (pauseBefore_|pauseAfter_|noReportPauseBefore_|noReportPauseAfter_)
-private pauseBefore_ ::= DEBUG_SINGLE step
-private pauseAfter_ ::= step DEBUG_SINGLE
-private noReportPauseBefore_ ::= DEBUG_DOUBLE step
-private noReportPauseAfter_ ::= step DEBUG_DOUBLE
+step ::= text+ comment?
 
-textualStep ::= (headingStep_|commentStep_)
-private headingStep_ ::= TEXTUAL_SINGLE partialTextualStep
-private commentStep_ ::= partialTextualStep TEXTUAL_SINGLE
+//private escapeCharOrVariables_ ::= (escapeChar|variable)
+//singleQuote ::= "'" escapeCharOrVariables_* "'"
+//doubleQuote ::= "\"" escapeCharOrVariables_* "\""
 
-step ::= MODFIER (functionDeclaration|singleQuote|doubleQuote|bracketedString|escapeChar|variable|comment)
+//private escapeCharOrVariablesOrBracketedString_ ::= (escapeChar|variable|bracketedString)
+//bracketedString ::= "[" escapeCharOrVariablesOrBracketedString_* "]"
 
-partialTextualStep ::= MODIFIER (escapeChar|variable)
 
-private functionBody_ ::= (singleQuote|doubleQuote|bracketedString|escapeChar|variable)
-functionDeclaration ::= functionBody_
+variable ::= (localVariable|globalVariable)
 
-private escapeCharOrVariables_ ::= (escapeChar|variable)
-singleQuote ::= SINGLE_QUOTE_BEGIN escapeCharOrVariables_* SINGLE_QUOTE_END
-doubleQuote ::= DOUBLE_QUOTE_BEGIN escapeCharOrVariables_* DOUBLE_QUOTE_END
+//codeBlock ::= "{" SOURCE_JS? "}"
 
-private escapeCharOrVariablesOrBracketedString_ ::= (escapeChar|variable|bracketedString)
-bracketedString ::= BRACKETD_BEGIN escapeCharOrVariablesOrBracketedString_* BRACKETD_END
-
-codeBlock ::= CODE_BLOCK_BEGIN SOURCE_JS? CODE_BLOCK_END
-
+//debugModifier ::= ("~"|"~~")
+//debug ::= (debugModifier step|step debugModifier)
+//
+//textualModifier ::= "-"
+//textualStep ::= (textualModifier step|step textualModifier)
